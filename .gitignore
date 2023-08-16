@@ -1,5 +1,8 @@
 bin/
-obj/
+obj/Debug/net7.0
 vscode/
 vs/
 Mini-Uber.csproj
+obj/
+*.editorconfig
+*.cache
