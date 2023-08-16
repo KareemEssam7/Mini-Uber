@@ -26,3 +26,17 @@ D:\ArraysOverrated\Mini-Uber\obj\Debug\net7.0\refint\Mini-Uber.dll
 D:\ArraysOverrated\Mini-Uber\obj\Debug\net7.0\Mini-Uber.pdb
 D:\ArraysOverrated\Mini-Uber\obj\Debug\net7.0\Mini-Uber.genruntimeconfig.cache
 D:\ArraysOverrated\Mini-Uber\obj\Debug\net7.0\ref\Mini-Uber.dll
+C:\Users\Dell\Mini-Uber\bin\Debug\net7.0\Mini-Uber.exe
+C:\Users\Dell\Mini-Uber\bin\Debug\net7.0\Mini-Uber.deps.json
+C:\Users\Dell\Mini-Uber\bin\Debug\net7.0\Mini-Uber.runtimeconfig.json
+C:\Users\Dell\Mini-Uber\bin\Debug\net7.0\Mini-Uber.dll
+C:\Users\Dell\Mini-Uber\bin\Debug\net7.0\Mini-Uber.pdb
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.AssemblyInfoInputs.cache
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.AssemblyInfo.cs
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.csproj.CoreCompileInputs.cache
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.dll
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\refint\Mini-Uber.dll
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.pdb
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\Mini-Uber.genruntimeconfig.cache
+C:\Users\Dell\Mini-Uber\obj\Debug\net7.0\ref\Mini-Uber.dll
