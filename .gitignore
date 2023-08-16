@@ -6,3 +6,7 @@ Mini-Uber.csproj
 obj/
 *.editorconfig
 *.cache
+/obj/Debug/
+/bin/Debug/
+/obj/
+/bin/
