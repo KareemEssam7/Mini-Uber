@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj": {}
+    "D:\\ArraysOverrated\\Mini-Uber\\Mini-Uber.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj": {
+    "D:\\ArraysOverrated\\Mini-Uber\\Mini-Uber.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj",
+        "projectUniqueName": "D:\\ArraysOverrated\\Mini-Uber\\Mini-Uber.csproj",
         "projectName": "Mini-Uber",
-        "projectPath": "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell\\Mini-Uber\\obj\\",
+        "projectPath": "D:\\ArraysOverrated\\Mini-Uber\\Mini-Uber.csproj",
+        "packagesPath": "C:\\Users\\Kareem Essam\\.nuget\\packages\\",
+        "outputPath": "D:\\ArraysOverrated\\Mini-Uber\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Kareem Essam\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
