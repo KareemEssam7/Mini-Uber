@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlTypes;
 
+
 public class User
 {
     public string FirstName { get; set; }
@@ -30,8 +31,10 @@ public class Rider : User
         CurrentLocation = currentLocation;
         CreditInfo = creditInfo;
     }
-    public void depositCash(double cash)
+    public void depositCash()
     {
+        double cash;
+        cash = Convert.ToDouble(Console.ReadLine());
         CreditInfo.CreditBalance += cash;
     }
     public void checkCreditInfo()
@@ -41,6 +44,49 @@ public class Rider : User
         Console.WriteLine(CreditInfo.monthYear.Month + "/" + CreditInfo.monthYear.Year);
         Console.WriteLine(CreditInfo.CreditCVV);
     }
+
+    public void registerUser()
+    {
+        do
+        {
+            Console.WriteLine("enter first name: ");
+            FirstName = Console.ReadLine()!;
+        } while (!Validate.ValidateName(FirstName));
+
+        do
+        {
+            Console.WriteLine("enter last name: ");
+            LastName = Console.ReadLine()!;
+        } while (!Validate.ValidateName(LastName));
+
+        do
+        {
+            Console.WriteLine("enter Email: ");
+            Email = Console.ReadLine()!;
+        } while (!Validate.IsValidEmail(Email));
+
+        do
+        {
+            Console.WriteLine("enter password(must include: lowercase, uppercase, number, special char, more than 8 chars): ");
+            Password = Console.ReadLine()!;
+        } while (!Validate.IsValidPassword(Password));
+
+        string tmppass;
+        do
+        {
+            Console.WriteLine("Confirm password: ");
+            tmppass = Console.ReadLine()!;
+        } while (tmppass != Password);
+
+        do
+        {
+            Console.WriteLine("enter phone number: ");
+            PhoneNumber = Console.ReadLine()!;
+        } while (!Validate.ValidateEgyptPhoneNumber(PhoneNumber));
+    }
+
+
+
     // public void RequestRide(Location destination)
     // {
     //     Console.WriteLine($"{FirstName} {LastName} is requesting a ride to {destination}.");

@@ -11,7 +11,6 @@ public class CreditExpiry
     }
 }
 
-
 public class CreditInfo
 {
     public string CreditName { get; set; }
@@ -28,48 +27,32 @@ public class CreditInfo
         CreditCVV = creditCVV;
         CreditBalance = creditBalance;
     }
-    static bool ValidateExpirationDate(int expMonth, int expYear)
+
+    public void registerCard()
     {
-        int currentYear = DateTime.Now.Year % 100; // Get last two digits of current year
-        int currentMonth = DateTime.Now.Month;
-
-        if (expYear < currentYear || (expYear == currentYear && expMonth < currentMonth))
+        do
         {
-            return false; // Card is expired
-        }
-        return true;
-    }
+            Console.WriteLine("enter credit name: ");
+            CreditName = Console.ReadLine()!;
+        } while (!Validate.ValidateName(CreditName));
 
-    static bool ValidateCVV(string cvv)
-    {
-        if (cvv.Length < 3 || cvv.Length > 4 || !int.TryParse(cvv, out _))
+        do
         {
-            return false; // CVV must be 3 or 4 digits
-        }
+            Console.WriteLine("enter credit number: ");
+            CreditNumber = Console.ReadLine()!;
+        } while (!Validate.ValidateCreditCardNumber(CreditNumber));
 
-        return true;
-    }
-
-    static bool ValidateCreditCardNumber(string cardNumber)
-    {
-        int sum = 0;
-        bool alternate = false;
-
-        for (int i = cardNumber.Length - 1; i >= 0; i--)
+        do
         {
-            int digit = int.Parse(cardNumber[i].ToString());
+            Console.WriteLine("enter expiry month and year: ");
+            monthYear.Month = Convert.ToInt32(Console.ReadLine());
+            monthYear.Year = Convert.ToInt32(Console.ReadLine());
+        } while (!Validate.ValidateExpirationDate(monthYear.Month, monthYear.Year));
 
-            if (alternate)
-            {
-                digit *= 2;
-                if (digit > 9)
-                    digit -= 9;
-            }
-
-            sum += digit;
-            alternate = !alternate;
-        }
-
-        return sum % 10 == 0;
+        do
+        {
+            Console.WriteLine("enter CVV: ");
+            CreditCVV = Console.ReadLine()!;
+        } while (!Validate.ValidateCVV(CreditCVV));
     }
 }
