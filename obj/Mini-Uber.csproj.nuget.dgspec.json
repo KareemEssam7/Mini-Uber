@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj": {}
+    "C:\\Users\\mb261\\OneDrive\\Desktop\\Mini-Uber-1\\Mini-Uber.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj": {
+    "C:\\Users\\mb261\\OneDrive\\Desktop\\Mini-Uber-1\\Mini-Uber.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj",
+        "projectUniqueName": "C:\\Users\\mb261\\OneDrive\\Desktop\\Mini-Uber-1\\Mini-Uber.csproj",
         "projectName": "Mini-Uber",
-        "projectPath": "C:\\Users\\Dell\\Mini-Uber\\Mini-Uber.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell\\Mini-Uber\\obj\\",
+        "projectPath": "C:\\Users\\mb261\\OneDrive\\Desktop\\Mini-Uber-1\\Mini-Uber.csproj",
+        "packagesPath": "C:\\Users\\mb261\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mb261\\OneDrive\\Desktop\\Mini-Uber-1\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\mb261\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,6 +37,20 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

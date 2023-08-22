@@ -1,8 +1,11 @@
 using System;
 using System.Data;
 using System.Data.SqlTypes;
-
-
+using Org.BouncyCastle.Cms;
+using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 public class User
 {
     public string FirstName { get; set; }
@@ -45,13 +48,54 @@ public class Rider : User
         Console.WriteLine(CreditInfo.CreditCVV);
     }
 
-    public void registerUser()
+
+    // public string Mail { get; set; }
+    // public string Pass { get; set; }
+    public void Login(string connectionstring)
     {
+
+        do
+        {
+            Console.WriteLine("enter email: ");
+            Email = Console.ReadLine();
+            Console.WriteLine("enter password: ");
+            Password = Console.ReadLine();
+
+
+            using (MySqlConnection connection = new MySqlConnection(connectionstring))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT COUNT(*) FROM newww_users WHERE Email = @Email AND Password = @Password";
+                using MySqlCommand command = new MySqlCommand(selectQuery, connection);
+
+                command.Parameters.AddWithValue("@Email", Email);
+                command.Parameters.AddWithValue("@Password", Password);
+
+                int count = Convert.ToInt32(command.ExecuteScalar());
+                connection.Close();
+
+                if (count > 0)
+                {
+                    Console.WriteLine("Login successful!");
+                    break;
+                }
+
+                connection.Close();
+            }
+        } while (true);
+    }
+
+    public void RegisterUser(string connectionstring)
+    {
+
         do
         {
             Console.WriteLine("enter first name: ");
             FirstName = Console.ReadLine()!;
+
         } while (!Validate.ValidateName(FirstName));
+
 
         do
         {
@@ -83,15 +127,32 @@ public class Rider : User
             Console.WriteLine("enter phone number: ");
             PhoneNumber = Console.ReadLine()!;
         } while (!Validate.ValidateEgyptPhoneNumber(PhoneNumber));
+        using (MySqlConnection connection = new MySqlConnection(connectionstring))
+        {
+            connection.Open();
+
+            string insertquery = "INSERT INTO newww_users (FirstName, LastName, Email, Password, PhoneNumber) VALUES (@FirstName, @LastName, @Email, @Password, @PhoneNumber)";
+            using (MySqlCommand command = new MySqlCommand(insertquery, connection))
+            {
+                command.Parameters.AddWithValue("@FirstName", FirstName);
+                command.Parameters.AddWithValue("@LastName", LastName);
+                command.Parameters.AddWithValue("@Email", Email);
+                command.Parameters.AddWithValue("@Password", Password);
+                command.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
     }
 
 
 
-    // public void RequestRide(Location destination)
-    // {
-    //     Console.WriteLine($"{FirstName} {LastName} is requesting a ride to {destination}.");
-    //     // Logic to request a ride goes here
-    // }
+
+
+     
 
     // public void CancelRide()
     // {
