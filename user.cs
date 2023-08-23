@@ -127,32 +127,18 @@ public class Rider : User
             Console.WriteLine("enter phone number: ");
             PhoneNumber = Console.ReadLine()!;
         } while (!Validate.ValidateEgyptPhoneNumber(PhoneNumber));
-        using (MySqlConnection connection = new MySqlConnection(connectionstring))
-        {
-            connection.Open();
 
-            string insertquery = "INSERT INTO newww_users (FirstName, LastName, Email, Password, PhoneNumber) VALUES (@FirstName, @LastName, @Email, @Password, @PhoneNumber)";
-            using (MySqlCommand command = new MySqlCommand(insertquery, connection))
-            {
-                command.Parameters.AddWithValue("@FirstName", FirstName);
-                command.Parameters.AddWithValue("@LastName", LastName);
-                command.Parameters.AddWithValue("@Email", Email);
-                command.Parameters.AddWithValue("@Password", Password);
-                command.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
-
-                command.ExecuteNonQuery();
-            }
-
-            connection.Close();
-        }
-
+        using var con = new MySqlConnection(connectionstring);
+        con.Open();
+        MySqlCommand cmd = new MySqlCommand(@"Insert into newww_users(FirstName, LastName, Email, Password, PhoneNumber) values (@FirstName, @LastName, @Email, @Password, @PhoneNumber)", con);
+        cmd.Parameters.AddWithValue("@FirstName", FirstName);
+        cmd.Parameters.AddWithValue("@LastName", LastName);
+        cmd.Parameters.AddWithValue("@Email", Email);
+        cmd.Parameters.AddWithValue("@Password", Password);
+        cmd.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
+        cmd.ExecuteNonQuery();
+        con.Close();
     }
-
-
-
-
-
-     
 
     // public void CancelRide()
     // {

@@ -11,8 +11,6 @@ public class Car
     public int AirConditioner;
     public Car()
     {
-
-
         speed = 1;
         Ratio = 1;
     }
@@ -101,12 +99,12 @@ public class Car
 
             Console.Write(") ");
 
-            
+
 
             Console.Write((int)(dists[i] / speed));
 
             Console.Write("mins, Price : ");
-            
+
             Random rand = new Random();
 
             long ran = rand.NextInt64() % 100;
@@ -161,9 +159,9 @@ public class Car
 public class Ride : Car
 {
 
-//    static double speed, Ratio;
+    //    static double speed, Ratio;
 
- //   static int AirConditioner;
+    //   static int AirConditioner;
 
     public Ride()
         : base()
@@ -180,8 +178,8 @@ public class Ride : Car
 public class RideAC : Car
 {
 
-    
-   // static double speed, Ratio;
+
+    // static double speed, Ratio;
     //static int AirConditioner;
     public RideAC()
         : base()

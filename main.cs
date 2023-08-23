@@ -13,7 +13,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=12345678;database=oracle";
+            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -24,13 +24,11 @@ namespace MyApp
             cmd.CommandText = """DROP TABLE IF EXISTS cars""";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = @"CREATE TABLE cars(id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        name TEXT, price INT)";
+            cmd.CommandText = @"CREATE TABLE cars(id INTEGER PRIMARY KEY AUTO_INCREMENT,name TEXT, price INT)";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "INSERT INTO cars(name, price) VALUES('Audi',52642)";
+            cmd.CommandText = "INSERT INTO cars(name, price) VALUES('audi' ,9999)";
             cmd.ExecuteNonQuery();
-            
             ///////////////////////////////////////////////////
 
             Location test = new Location(1.2, 3.2);
@@ -43,21 +41,20 @@ namespace MyApp
 
             if (ch == "login" || ch == "Login")
             {
-                Console.WriteLine("WIP");
                 one.Login(cs);
             }
             else if (ch == "register" || ch == "Register")
             {
                 one.RegisterUser(cs);
+                one.Login(cs);
             }
 
-            /*Console.WriteLine(one.FirstName);
+            Console.WriteLine(one.FirstName);
             Console.WriteLine(one.LastName);
             Console.WriteLine(one.Email);
             Console.WriteLine(one.Password);
             Console.WriteLine(one.PhoneNumber);
-            Console.WriteLine(one.CurrentLocation.Latitude);
-            Console.WriteLine(one.CurrentLocation.Longitude);*/
+
 
             Console.WriteLine("Select action");
             Console.WriteLine("1: Edit credit card info\n2: Check credit info\n3: Deposit money\n4: Check current funds\n5: Get a ride");
@@ -82,7 +79,8 @@ namespace MyApp
                 {
                     Console.WriteLine(one.CreditInfo.CreditBalance);
                 }
-                else if (action == 5){
+                else if (action == 5)
+                {
                     Console.WriteLine("\n1 : Ride \n2 : Ride AC+ \n3 : Moto \n4 : Freight");
                     int choose;
                     choose = Convert.ToInt32(Console.ReadLine());
@@ -90,7 +88,7 @@ namespace MyApp
                     Console.WriteLine("\nenter your x-coordinate");
 
                     int x1 = Convert.ToInt32(Console.ReadLine());
-                    
+
                     Console.WriteLine("\nenter your y-coordinate");
 
                     int x2 = Convert.ToInt32(Console.ReadLine());
@@ -98,34 +96,39 @@ namespace MyApp
                     Console.WriteLine("enter your destination's x-coordinate");
 
                     int y1 = Convert.ToInt32(Console.ReadLine());
-                    
+
                     Console.WriteLine("enter your destination's y-coordinate");
-                    
+
                     int y2 = Convert.ToInt32(Console.ReadLine());
 
                     Location loc = new Location(x1, y1);
 
                     Location des = new Location(x2, y2);
 
-                    if (choose == 1){
+                    if (choose == 1)
+                    {
                         Ride ride = new Ride();
                         ride.RequestRide(loc, des);
                     }
-                    else if (choose == 2){
+                    else if (choose == 2)
+                    {
                         RideAC ride = new RideAC();
                         ride.RequestRide(loc, des);
                     }
-                    else if (choose == 3){
+                    else if (choose == 3)
+                    {
                         Moto ride = new Moto();
                         ride.RequestRide(loc, des);
                     }
-                    else if (choose == 4){
+                    else if (choose == 4)
+                    {
                         Freight ride = new Freight();
                         ride.RequestRide(loc, des);
                     }
                 }
 
-                else if (action == 6){
+                else if (action == 6)
+                {
                     // feedback, inquire
                 }
 
