@@ -28,7 +28,7 @@ public class CreditInfo
         CreditBalance = creditBalance;
     }
 
-    public void registerCard()
+    public void registerCreditInfo(Rider rider)
     {
         do
         {
@@ -55,4 +55,5 @@ public class CreditInfo
             CreditCVV = Console.ReadLine()!;
         } while (!Validate.ValidateCVV(CreditCVV));
     }
+
 }

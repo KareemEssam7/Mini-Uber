@@ -36,6 +36,9 @@ namespace MyApp
             CreditInfo wallet1 = new CreditInfo("parlerler", "1010010101", expdate, "033", 0.0);
             Rider one = new Rider("Kareem", "Essam", "kareemessam2101@gmail.com", "testtube", "01092217001", test, wallet1);
 
+            Context context;
+            context = new Context(new creditCardMethod());
+
             Console.WriteLine("Login or Register?");
             string ch = Console.ReadLine()!;
 
@@ -65,7 +68,7 @@ namespace MyApp
                 action = Convert.ToInt32(Console.ReadLine());
                 if (action == 1)
                 {
-                    wallet1.registerCard();
+                    //pcon.registerCreditInfo(one);
                 }
                 else if (action == 2)
                 {
