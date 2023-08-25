@@ -28,7 +28,7 @@ public class CreditInfo
         CreditBalance = creditBalance;
     }
 
-    public void registerCreditInfo(Rider rider)
+    public void registerCreditInfo(User user)
     {
         do
         {
