@@ -13,7 +13,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=kareem123;database=oracle";
+            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -31,6 +31,14 @@ namespace MyApp
             cmd.ExecuteNonQuery();
             ///////////////////////////////////////////////////
 
+            User activeUser = new User();
+            IHandler loginHandler = new LoginHandler();
+            IHandler registerHandler = new RegisterHandler();
+
+            loginHandler.SetNext(registerHandler);
+            Console.WriteLine("Register or Login?");
+            string enteraction = Console.ReadLine()!;
+            Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
         }
     }
 }

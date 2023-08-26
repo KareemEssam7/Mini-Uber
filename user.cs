@@ -8,7 +8,7 @@ using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 
- // singleton
+// singleton
 public class UserManager
 {
     private static UserManager _instance;
@@ -41,27 +41,27 @@ public class UserManager
         con.Close();
     }
 
-    public void Login(string email, string password,string connectionstring)
+    public void Login(string email, string password, string connectionstring)
     {
         using (MySqlConnection connection = new MySqlConnection(connectionstring))
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT COUNT(*) FROM newww_users WHERE Email = @Email AND Password = @Password";
+            using MySqlCommand command = new MySqlCommand(selectQuery, connection);
+
+            command.Parameters.AddWithValue("@Email", email);
+            command.Parameters.AddWithValue("@Password", password);
+
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            connection.Close();
+            if (count > 0)
             {
-                connection.Open();
-
-                string selectQuery = "SELECT COUNT(*) FROM newww_users WHERE Email = @Email AND Password = @Password";
-                using MySqlCommand command = new MySqlCommand(selectQuery, connection);
-
-                command.Parameters.AddWithValue("@Email", email);
-                command.Parameters.AddWithValue("@Password", password);
-
-                int count = Convert.ToInt32(command.ExecuteScalar());
-                connection.Close();
-                if (count > 0)
-                {
-                    Console.WriteLine("Login successful!");
-                }
-
-                connection.Close();
+                Console.WriteLine("Login successful!");
             }
+
+            connection.Close();
+        }
     }
 }
 
@@ -72,4 +72,5 @@ public class User
     public string Email { get; set; }
     public string Password { get; set; }
     public string PhoneNumber { get; set; }
+
 }
