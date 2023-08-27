@@ -32,6 +32,8 @@ namespace MyApp
             ///////////////////////////////////////////////////
 
             User activeUser = new User();
+
+
             IHandler loginHandler = new LoginHandler();
             IHandler registerHandler = new RegisterHandler();
 
@@ -39,6 +41,28 @@ namespace MyApp
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
+
+            string paymentMethod = CreditMethods.GetUserPaymentMethod();
+            IPaymentStrategy paymentStrategy;
+
+            if (paymentMethod == "creditcard")
+            {
+                paymentStrategy = new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0);
+                CreditCardPayment activeCredit = new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0);
+                activeCredit.registerCreditInfo();
+            }
+            else if (paymentMethod == "paypal")
+            {
+                Console.WriteLine("Enter paypal Email");
+                string email = Console.ReadLine()!;
+                paymentStrategy = new PayPalPayment(email);
+            }
+            else if (paymentMethod == "cash")
+            {
+                Console.WriteLine("Thank you");
+            }
+            //should only take this information when regestering user.
+            //should register this info into the database with the rest of the user info.
         }
     }
 }
