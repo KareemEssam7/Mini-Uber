@@ -4,16 +4,11 @@ using Microsoft.Identity.Client;
 using System.Threading;
 using System.Reflection.Metadata.Ecma335;
 
-public class Car
+abstract public class Car
 {
     public double speed, Ratio;
 
     public int AirConditioner;
-    public Car()
-    {
-        speed = 1;
-        Ratio = 1;
-    }
 
     public class DriverLocationGenerator
     {
@@ -40,6 +35,12 @@ public class Car
         }
     }
 
+
+    public void generateOptions(){}
+
+    public void displayOptions(){}
+
+    public void countDown(){}
     public void RequestRide(Location start, Location destination)
     {
         // choose ride type (require class for types)
@@ -121,7 +122,9 @@ public class Car
         Console.WriteLine("\nDriver on his way\n");
 
         ch--;
-
+        //put all variable declaration up
+        //subtract fee from credict
+        //class for invalid input, 
         //start some count down, with the option to cancel with a fee, or just if countdown
         //finished, write "Done!"
         int countdown = (int)dists[ch] / (int)speed;
@@ -207,9 +210,6 @@ public class Moto : Car
 }
 public class Freight : Car
 {
-
-    static double speed, Ratio;
-    static int AirConditioner;
 
     public Freight()
         : base()

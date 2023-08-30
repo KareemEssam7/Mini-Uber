@@ -68,9 +68,22 @@ public class LoginHandler : IHandler
     }
 }
 
+
 // Concrete register handler
 public class RegisterHandler : IHandler
 {
+    public delegate bool Valid(String s);
+
+    /*public String Inp( Valid valid, String msg){
+        String x;
+         do
+            {
+                Console.WriteLine(msg);
+                x = Console.ReadLine()!;
+
+            } while (!Validate.ValidateName(x));
+            return x;
+}*/
     private IHandler _nextHandler;
 
     public IHandler SetNext(IHandler handler)
@@ -89,6 +102,7 @@ public class RegisterHandler : IHandler
                 activeUser.FirstName = Console.ReadLine()!;
 
             } while (!Validate.ValidateName(activeUser.FirstName));
+
 
 
             do

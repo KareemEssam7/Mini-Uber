@@ -13,7 +13,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
+            string cs = "server=127.0.0.1;uid=root;pwd=kareem123;database=oracle";
 
             using var con = new MySqlConnection(cs);
             con.Open();
