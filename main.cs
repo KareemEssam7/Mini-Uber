@@ -13,7 +13,11 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
+<<<<<<< HEAD
             string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
+=======
+            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle";
+>>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -41,7 +45,12 @@ namespace MyApp
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
+<<<<<<< HEAD
             string paymentMethod = CreditMethods.GetUserPaymentMethod();
+=======
+
+            /*string paymentMethod = CreditMethods.GetUserPaymentMethod();
+>>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
             IPaymentStrategy paymentStrategy;
 
             if (paymentMethod == "creditcard")
@@ -61,7 +70,32 @@ namespace MyApp
                 Console.WriteLine("Thank you");
             }
             //should only take this information when regestering user.
-            //should register this info into the database with the rest of the user info.
+            //should register this info into the database with the rest of the user info.*/
+
+
+            IIHandler passwordReset = new PasswordReset();
+            IIHandler emailReset = new EmailReset();
+            IIHandler phoneNumberReset = new PhoneNumberReset();
+            passwordReset.SetNext(emailReset);
+            emailReset.SetNext(phoneNumberReset);
+            string answer;
+            Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
+            answer = Console.ReadLine()!;
+            while (answer == "Y" || answer == "y")
+            {
+                Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
+                enteraction = Console.ReadLine()!;
+                int command;
+                command = Convert.ToInt32(enteraction);
+                Console.WriteLine(passwordReset.HandleRequest(command, activeUser, cs));
+                Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
+                answer = Console.ReadLine()!;
+            }
+
+
+
+
+
         }
     }
 }
