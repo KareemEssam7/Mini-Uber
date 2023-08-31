@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-static class Validate
+public static class Validate
 {
     public static bool ValidateName(string name)
     {
