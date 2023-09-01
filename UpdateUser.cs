@@ -22,11 +22,11 @@ public class PasswordReset : IIHandler
             string newPassword, confirmPassword;
 
             Console.WriteLine("Enter New Password: ");
-            newPassword = Console.ReadLine()!;
-            /*do{
-                Console.WriteLine("Password Is Weak. Reenter Your New Password: ");
+            newPassword = Console.ReadLine();
+            do{
+                Console.WriteLine("Password Is Weak (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
                 newPassword = Console.ReadLine();
-            }while(!Validate.IsValidPassword(newPassword));*/
+            }while(!Validate.IsValidPassword(newPassword));
             Console.WriteLine("Confirm Password: ");
             confirmPassword = Console.ReadLine()!;
             while (confirmPassword != newPassword)
@@ -81,11 +81,11 @@ public class EmailReset : IIHandler
             string newEmail;
 
             Console.WriteLine("Enter New Email: ");
-            newEmail = Console.ReadLine()!;
-            /*do{
-                Console.WriteLine("Invalid Email. Reenter Your new Email: ");
+            newEmail = Console.ReadLine();
+            do{
+                Console.WriteLine("Invalid! Please Reenter Your New Email: ");
                 newEmail = Console.ReadLine();
-            }while(!Validate.IsValidEmail(newEmail));*/
+            }while(!Validate.IsValidEmail(newEmail));
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
@@ -132,11 +132,11 @@ public class PhoneNumberReset : IIHandler
             string newPhoneNumber;
 
             Console.WriteLine("Enter New PhoneNumber: ");
-            newPhoneNumber = Console.ReadLine()!;
-            /*do{
-                Console.WriteLine("Invalid PhoneNumber. Reenter Your new PhoneNumber: ");
+            newPhoneNumber = Console.ReadLine();
+            do{
+                Console.WriteLine("Invalid! Please Reenter Your New PhoneNumber: ");
                 newPhoneNumber = Console.ReadLine();
-            }while(!Validate.IsValidPhoneNumber(newPhoneNumber));*/
+            }while(!Validate.ValidateEgyptPhoneNumber(newPhoneNumber));
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {

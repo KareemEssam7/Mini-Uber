@@ -151,11 +151,11 @@ static class RegisterMethod
             activeUser.Email = Console.ReadLine()!;
         }
 
-        Console.WriteLine("Enter Password(Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
+        Console.WriteLine("Enter Password (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
         activeUser.Password = Console.ReadLine()!;
         while (!Validate.IsValidPassword(activeUser.Password))
         {
-            Console.WriteLine("Invalid Password (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
+            Console.WriteLine("Password Is Weak (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
             activeUser.Password = Console.ReadLine()!;
         }
 
