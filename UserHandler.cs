@@ -40,7 +40,7 @@ public class LoginHandler : IHandler
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT id FROM newww_user WHERE email = @Email AND password = @Password";
+                    string selectQuery = "SELECT ID FROM newww_users WHERE email = @Email AND password = @Password";
                     using MySqlCommand command = new MySqlCommand(selectQuery, connection);
 
                     command.Parameters.AddWithValue("@Email", activeUser.Email);
@@ -50,7 +50,7 @@ public class LoginHandler : IHandler
                     {
                         if (reader.Read())
                         {
-                            int userId = reader.GetInt32("id");
+                            activeUser.ID = reader.GetInt32("ID");
 
                             break;
                         }
@@ -102,6 +102,7 @@ public class RegisterHandler : IHandler
             cmd.Parameters.AddWithValue("@Password", activeUser.Password);
             cmd.Parameters.AddWithValue("@PhoneNumber", activeUser.PhoneNumber);
             cmd.ExecuteNonQuery();
+            activeUser.ID = cmd.LastInsertedId;
             con.Close();
 
             return "User registered successfully.";

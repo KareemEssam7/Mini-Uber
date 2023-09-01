@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.X509;
+using Google.Protobuf.Reflection;
 
 namespace MyApp
 {
@@ -13,7 +14,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
+            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle; Allow User Variables=True;";
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -51,19 +52,8 @@ namespace MyApp
             IIHandler phoneNumberReset = new PhoneNumberReset();
             passwordReset.SetNext(emailReset);
             emailReset.SetNext(phoneNumberReset);
-            string answer;
-            Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
-            answer = Console.ReadLine()!;
-            while (answer == "Y" || answer == "y")
-            {
-                Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
-                enteraction = Console.ReadLine()!;
-                int command;
-                command = Convert.ToInt32(enteraction);
-                Console.WriteLine(passwordReset.HandleRequest(command, activeUser, cs));
-                Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
-                answer = Console.ReadLine()!;
-            }
+            UpdaateUserInformation.UserInput(passwordReset, activeUser, cs);
+
         }
     }
 }
