@@ -40,17 +40,24 @@ public class LoginHandler : IHandler
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT COUNT(*) FROM newww_users WHERE Email = @Email AND Password = @Password";
+                    string selectQuery = "SELECT ID FROM newww_users WHERE email = @Email AND password = @Password";
                     using MySqlCommand command = new MySqlCommand(selectQuery, connection);
 
                     command.Parameters.AddWithValue("@Email", activeUser.Email);
                     command.Parameters.AddWithValue("@Password", activeUser.Password);
 
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-
-                    if (count > 0)
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        break;
+                        if (reader.Read())
+                        {   
+                           activeUser.ID = reader.GetInt32("ID");
+                            
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("User not found.");
+                        }
                     }
 
                     connection.Close();
@@ -96,6 +103,7 @@ public class RegisterHandler : IHandler
             cmd.Parameters.AddWithValue("@Password", activeUser.Password);
             cmd.Parameters.AddWithValue("@PhoneNumber", activeUser.PhoneNumber);
             cmd.ExecuteNonQuery();
+            activeUser.ID=cmd.LastInsertedId;
             con.Close();
             return "User registered successfully.";
         }

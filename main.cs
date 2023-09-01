@@ -14,15 +14,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-<<<<<<< HEAD
-            string cs = "server=127.0.0.1;uid=root;pwd=1208;database=oracle";
-=======
-<<<<<<< HEAD
-            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
-=======
-            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle";
->>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
->>>>>>> b37678836c1cfefb8a75643e449470fb62b6fe6c
+            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle; Allow User Variables=True;";
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -50,16 +42,15 @@ namespace MyApp
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
-<<<<<<< HEAD
-                                                                                              
-=======
-<<<<<<< HEAD
-            string paymentMethod = CreditMethods.GetUserPaymentMethod();
-=======
 
->>>>>>> b37678836c1cfefb8a75643e449470fb62b6fe6c
+                                                                                              
+
+            string paymentMethod = CreditMethods.GetUserPaymentMethod();
+
+
+
             /*string paymentMethod = CreditMethods.GetUserPaymentMethod();
->>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
+
             IPaymentStrategy paymentStrategy;
 
             if (paymentMethod == "creditcard")
@@ -87,34 +78,7 @@ namespace MyApp
             IIHandler phoneNumberReset = new PhoneNumberReset();
             passwordReset.SetNext(emailReset);
             emailReset.SetNext(phoneNumberReset);
-            string answer; int WhatToDo;
-            Console.WriteLine("To request rides Press: 1 \nTo change the Account Information Press: 2");
-            WhatToDo=Convert.ToInt32( Console.ReadLine());
-            if(WhatToDo==1)
-            {
-                RequestRide HandleRide= new RequestRide();
-                HandleRide.HandleRide();
-            }
-            else
-            {
-                Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
-                answer = Console.ReadLine()!;
-                while (answer == "Y" || answer == "y")
-                {
-                    Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
-                    enteraction = Console.ReadLine()!;
-                    int command;
-                    command = Convert.ToInt32(enteraction);
-                    Console.WriteLine(passwordReset.HandleRequest(command, activeUser, cs));
-                    Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
-                    answer = Console.ReadLine()!;
-                }    
-            }
-            
-
-
-
-
+            UpdaateUserInformation.UserInput(passwordReset,activeUser,cs);
 
         }
     }

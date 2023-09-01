@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using System.Net.Mail;
 
 public interface IIHandler
 {
@@ -28,6 +29,7 @@ public class PasswordReset : IIHandler
         if (numCommand == 1)
         {
             string newPassword, confirmPassword;
+             
             Console.WriteLine("Enter New Password: ");
             newPassword = Console.ReadLine();
             /*do{
@@ -46,14 +48,14 @@ public class PasswordReset : IIHandler
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-
-                string updatePasswordQuery = "UPDATE newww_users SET Password = @newPassword";
+                long userID =activeUser.ID;
+                string updatePasswordQuery = "UPDATE newww_users SET Password = @newPassword WHERE ID =" +userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updatePasswordQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@newPassword", newPassword);
                     int rowsAffected = cmd.ExecuteNonQuery();
-
+        
                 }
             }
 
@@ -86,6 +88,7 @@ public class EmailReset : IIHandler
         if (numCommand == 2)
         {
             string newEmail;
+             
             Console.WriteLine("Enter New Email: ");
             newEmail = Console.ReadLine();
             /*do{
@@ -96,8 +99,8 @@ public class EmailReset : IIHandler
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-
-                string updateEmailQuery = "UPDATE newww_users SET Email = @newEmail";
+                long userID =activeUser.ID;
+                string updateEmailQuery = "UPDATE newww_users SET Email = @newEmail WHERE ID ="+userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updateEmailQuery, connection))
                 {
@@ -136,6 +139,7 @@ public class PhoneNumberReset : IIHandler
         if (numCommand == 3)
         {
             string newPhoneNumber;
+            
             Console.WriteLine("Enter New PhoneNumber: ");
             newPhoneNumber = Console.ReadLine();
             /*do{
@@ -146,8 +150,9 @@ public class PhoneNumberReset : IIHandler
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-
-                string updatePhoneNumberQuery = "UPDATE newww_users SET PhoneNumber = @newPhoneNumber";
+                 long userID =activeUser.ID;
+                 
+                string updatePhoneNumberQuery = "UPDATE newww_users SET PhoneNumber = @newPhoneNumber WHERE ID ="+userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updatePhoneNumberQuery, connection))
                 {
@@ -171,3 +176,24 @@ public class PhoneNumberReset : IIHandler
     }
 }
 
+
+public static class UpdaateUserInformation
+{
+        public static void UserInput(IIHandler passwordReset,User activeUser, string connectionstring)
+        {
+           string answer,enteraction;
+            Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
+            answer = Console.ReadLine()!;
+            while (answer == "Y" || answer == "y")
+            {
+                Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
+                enteraction = Console.ReadLine()!;
+                int command;
+                command = Convert.ToInt32(enteraction);
+                Console.WriteLine(passwordReset.HandleRequest(command, activeUser, connectionstring));
+                Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
+                answer = Console.ReadLine()!;
+            }
+        }
+           
+}
