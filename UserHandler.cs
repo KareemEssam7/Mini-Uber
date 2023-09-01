@@ -1,20 +1,9 @@
-using System;
-using System.Data;
-using System.Data.SqlTypes;
-using Org.BouncyCastle.Cms;
-using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
-using System.Drawing.Text;
-
 public interface IHandler
 {
     IHandler SetNext(IHandler handler);
-    string HandleRequest(string userCommand, User activeUser, string connectionstring);
+    string HandleRequest(string userCommand, User activeUser, string connectionstring, PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore);
 }
-
-
 public class LoginHandler : IHandler
 {
     private IHandler _nextHandler;
@@ -25,22 +14,22 @@ public class LoginHandler : IHandler
         return handler;
     }
 
-    public string HandleRequest(string userCommand, User activeUser, string connectionstring)
+    public string HandleRequest(string userCommand, User activeUser, string connectionstring, PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore)
     {
         if (userCommand == "login" || userCommand == "Login")
         {
             do
             {
                 Console.WriteLine("enter email: ");
-                activeUser.Email = Console.ReadLine();
+                activeUser.Email = Console.ReadLine()!;
                 Console.WriteLine("enter password: ");
-                activeUser.Password = Console.ReadLine();
+                activeUser.Password = Console.ReadLine()!;
 
                 using (MySqlConnection connection = new MySqlConnection(connectionstring))
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT ID FROM newww_users WHERE email = @Email AND password = @Password";
+                    string selectQuery = "SELECT id, CreditNumber, PaymentType, PayPalEmail FROM newww_users WHERE email = @Email AND password = @Password";
                     using MySqlCommand command = new MySqlCommand(selectQuery, connection);
 
                     command.Parameters.AddWithValue("@Email", activeUser.Email);
@@ -51,7 +40,21 @@ public class LoginHandler : IHandler
                         if (reader.Read())
                         {
                             activeUser.ID = reader.GetInt32("ID");
-
+                            paymentInfoToStore.PayPalEmail = reader.GetString("PayPalEmail");
+                            paymentInfoToStore.paymentType = reader.GetString("PaymentType");
+                            activeCredit.CreditNumber = reader.GetString("CreditNumber");
+                            if (paymentInfoToStore.paymentType == "creditcard")
+                            {
+                                paymentSetter.setPaymentStrategy(new CreditCardPayment("default", "1010010101", 0, 0, "000"));
+                            }
+                            else if (paymentInfoToStore.paymentType == "paypal")
+                            {
+                                paymentSetter.setPaymentStrategy(new PayPalPayment(paymentInfoToStore.PayPalEmail));
+                            }
+                            else if (paymentInfoToStore.paymentType == "cash")
+                            {
+                                paymentSetter.setPaymentStrategy(new CashPayment());
+                            }
                             break;
                         }
                         else
@@ -59,7 +62,6 @@ public class LoginHandler : IHandler
                             Console.WriteLine("User not found.");
                         }
                     }
-
                     connection.Close();
                 }
             } while (true);
@@ -67,7 +69,7 @@ public class LoginHandler : IHandler
         }
         else if (_nextHandler != null)
         {
-            return _nextHandler.HandleRequest(userCommand, activeUser, connectionstring);
+            return _nextHandler.HandleRequest(userCommand, activeUser, connectionstring, paymentSetter, activeCredit, paymentInfoToStore);
         }
         else
         {
@@ -75,7 +77,6 @@ public class LoginHandler : IHandler
         }
     }
 }
-
 
 // Concrete register handler
 public class RegisterHandler : IHandler
@@ -88,19 +89,23 @@ public class RegisterHandler : IHandler
         return handler;
     }
 
-    public string HandleRequest(string userCommand, User activeUser, string connectionstring)
+    public string HandleRequest(string userCommand, User activeUser, string connectionstring, PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore)
     {
         if (userCommand == "Register" || userCommand == "register")
         {
             Console.WriteLine(RegisterMethod.getUserData(activeUser));
+            PaymentMethods.GetUserPaymentMethod(paymentSetter, activeCredit, paymentInfoToStore);
             using var con = new MySqlConnection(connectionstring);
             con.Open();
-            MySqlCommand cmd = new MySqlCommand(@"Insert into newww_users(FirstName, LastName, Email, Password, PhoneNumber) values (@FirstName, @LastName, @Email, @Password, @PhoneNumber)", con);
+            MySqlCommand cmd = new MySqlCommand(@"Insert into newww_users(FirstName, LastName, Email, Password, PhoneNumber, PaymentType, CreditNumber, PayPalEmail) values (@FirstName, @LastName, @Email, @Password, @PhoneNumber, @PaymentType, @CreditNumber, @PayPalEmail)", con);
             cmd.Parameters.AddWithValue("@FirstName", activeUser.FirstName);
             cmd.Parameters.AddWithValue("@LastName", activeUser.LastName);
             cmd.Parameters.AddWithValue("@Email", activeUser.Email);
             cmd.Parameters.AddWithValue("@Password", activeUser.Password);
             cmd.Parameters.AddWithValue("@PhoneNumber", activeUser.PhoneNumber);
+            cmd.Parameters.AddWithValue("@PaymentType", paymentInfoToStore.paymentType);
+            cmd.Parameters.AddWithValue("@CreditNumber", activeCredit.CreditNumber);
+            cmd.Parameters.AddWithValue("@PayPalEmail", paymentInfoToStore.PayPalEmail);
             cmd.ExecuteNonQuery();
             activeUser.ID = cmd.LastInsertedId;
             con.Close();
@@ -109,7 +114,7 @@ public class RegisterHandler : IHandler
         }
         else if (_nextHandler != null)
         {
-            return _nextHandler.HandleRequest(userCommand, activeUser, connectionstring);
+            return _nextHandler.HandleRequest(userCommand, activeUser, connectionstring, paymentSetter, activeCredit, paymentInfoToStore);
         }
         else
         {
@@ -173,5 +178,4 @@ static class RegisterMethod
 
         return "Validation Succesful";
     }
-
 }

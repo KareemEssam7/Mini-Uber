@@ -1,11 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Data.SqlClient;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.X509;
-using Google.Protobuf.Reflection;
+﻿using MySql.Data.MySqlClient;
 
 namespace MyApp
 {
@@ -14,7 +7,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=12345678;database=oracle; ";
+            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle; Allow User Variables=True;";
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -32,7 +25,11 @@ namespace MyApp
             cmd.ExecuteNonQuery();
             ///////////////////////////////////////////////////
 
+            //Object Initializations
+            PaymentInfoToStore paymentInfoToStore = new PaymentInfoToStore();
             User activeUser = new User();
+            CreditCardPayment activeCredit = new CreditCardPayment("default", "0", 0, 0, "000");
+            PaymentSetter paymentSetter = new PaymentSetter();
 
             //Login and register logic
             IHandler loginHandler = new LoginHandler();
@@ -40,20 +37,27 @@ namespace MyApp
             loginHandler.SetNext(registerHandler);
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
-            Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
+            Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs, paymentSetter, activeCredit, paymentInfoToStore));
+            Console.WriteLine(paymentInfoToStore.paymentType);
 
-            //geting payment type
-            PaymentSetter paymentSetter = new PaymentSetter();
-            PaymentMethods.GetUserPaymentMethod(paymentSetter);
-
-
-            IIHandler passwordReset = new PasswordReset();
-            IIHandler emailReset = new EmailReset();
-            IIHandler phoneNumberReset = new PhoneNumberReset();
-            passwordReset.SetNext(emailReset);
-            emailReset.SetNext(phoneNumberReset);
-            UpdaateUserInformation.UserInput(passwordReset, activeUser, cs);
-
+            //Main Logic
+            int userChoice;
+            Console.WriteLine("To request rides Press: 1 \nTo change the Account Information Press: 2");
+            userChoice = Convert.ToInt32(Console.ReadLine());
+            if (userChoice == 1)
+            {
+                RequestRide HandleRide = new RequestRide();
+                HandleRide.HandleRide(paymentSetter);
+            }
+            else
+            {
+                IIHandler passwordReset = new PasswordReset();
+                IIHandler emailReset = new EmailReset();
+                IIHandler phoneNumberReset = new PhoneNumberReset();
+                passwordReset.SetNext(emailReset);
+                emailReset.SetNext(phoneNumberReset);
+                UpdaateUserInformation.UserInput(passwordReset, activeUser, cs);
+            }
         }
     }
 }

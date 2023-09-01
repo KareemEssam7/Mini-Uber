@@ -1,6 +1,6 @@
 public interface IPaymentStrategy
 {
-    void ProcessPayment(double amount);
+    void ProcessPayment(int amount);
 }
 
 public class PaymentSetter
@@ -12,7 +12,7 @@ public class PaymentSetter
         this.paymentStrategy = paymentStrategy;
     }
 
-    public void ProcessPayment(double amount)
+    public void ProcessPayment(int amount)
     {
         this.paymentStrategy.ProcessPayment(amount);
     }
@@ -25,18 +25,16 @@ public class CreditCardPayment : IPaymentStrategy
     public int Month { get; set; }
     public int Year { get; set; }
     public string CreditCVV { get; set; }
-    public double CreditBalance { get; set; }
 
-    public CreditCardPayment(string creditName, string creditNumber, int month, int year, string creditCVV, double creditBalance)
+    public CreditCardPayment(string creditName, string creditNumber, int month, int year, string creditCVV)
     {
         CreditName = creditName;
         CreditNumber = creditNumber;
         Month = month;
         Year = year;
         CreditCVV = creditCVV;
-        CreditBalance = creditBalance;
     }
-    public void ProcessPayment(double amount)
+    public void ProcessPayment(int amount)
     {
         Console.WriteLine($"Processing credit card payment of ${amount}.");
     }
@@ -70,7 +68,7 @@ public class CreditCardPayment : IPaymentStrategy
 }
 public static class PaymentMethods
 {
-    public static string GetUserPaymentMethod(PaymentSetter paymentSetter)
+    public static void GetUserPaymentMethod(PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore)
     {
         do
         {
@@ -79,23 +77,25 @@ public static class PaymentMethods
 
             if (interaction == "creditcard")
             {
-                paymentSetter.setPaymentStrategy(new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0));
-                CreditCardPayment activeCredit = new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0);
+                paymentSetter.setPaymentStrategy(new CreditCardPayment("default", "1010010101", 0, 0, "000"));
                 activeCredit.registerCreditInfo();
-                return interaction;
+                paymentInfoToStore.paymentType = interaction;
+                break;
             }
             else if (interaction == "paypal")
             {
                 Console.WriteLine("Enter paypal Email");
-                string email = Console.ReadLine()!;
-                paymentSetter.setPaymentStrategy(new PayPalPayment(email));
-                return interaction;
+                paymentInfoToStore.PayPalEmail = Console.ReadLine()!;
+                paymentSetter.setPaymentStrategy(new PayPalPayment(paymentInfoToStore.PayPalEmail));
+                paymentInfoToStore.paymentType = interaction;
+                break;
             }
             else if (interaction == "cash")
             {
                 Console.WriteLine("Thank you");
                 paymentSetter.setPaymentStrategy(new CashPayment());
-                return interaction;
+                paymentInfoToStore.paymentType = interaction;
+                break;
             }
             else
             {
@@ -114,7 +114,7 @@ public class PayPalPayment : IPaymentStrategy
         this.email = email;
     }
 
-    public void ProcessPayment(double amount)
+    public void ProcessPayment(int amount)
     {
         Console.WriteLine($"Processing PayPal payment of ${amount} using email {email}.");
     }
@@ -122,8 +122,13 @@ public class PayPalPayment : IPaymentStrategy
 
 public class CashPayment : IPaymentStrategy
 {
-    public void ProcessPayment(double amount)
+    public void ProcessPayment(int amount)
     {
         Console.WriteLine("Thank you for choosing Uber-Mini");
     }
+}
+public class PaymentInfoToStore
+{
+    public string paymentType { get; set; }
+    public string PayPalEmail { get; set; }
 }

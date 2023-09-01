@@ -1,9 +1,3 @@
-using System.Diagnostics.SymbolStore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Identity.Client;
-using System.Threading;
-using System.Reflection.Metadata.Ecma335;
-
 abstract public class Car
 {
     public double speed, Ratio;
@@ -42,7 +36,7 @@ abstract public class Car
     }
 
 
-    public void generateOptions(Location start, Location destination)
+    public void generateOptions(Location start, Location destination, PaymentSetter paymentSetter)
     {
 
         Location[] arr = new Location[10000];
@@ -62,14 +56,15 @@ abstract public class Car
         }
 
         Array.Sort(dists);
-        displayOptions(start, destination);
+        displayOptions(start, destination, paymentSetter);
     }
 
-    public void displayOptions(Location start, Location destination)
+    public void displayOptions(Location start, Location destination, PaymentSetter paymentSetter)
     {
         Console.WriteLine("here's the available drivers\n");
 
         double D = dist(start.x, start.y, destination.x, destination.y);
+        int[] pricearr = new int[10];
 
         for (int i = 0; i < 10; i++)
         {
@@ -77,8 +72,6 @@ abstract public class Car
             Console.Write(i + 1);
 
             Console.Write(") ");
-
-
 
             Console.Write((int)(dists[i] / speed));
 
@@ -89,29 +82,31 @@ abstract public class Car
             long ran = rand.NextInt64() % 100;
 
             Console.Write((int)(D * Ratio + ran));
-
+            pricearr[i] = (int)(D * Ratio + ran);
             Console.Write(" pounds\n");
         }
-        countDown(start, destination);
+
+        int choice;
+        do
+        {
+            choice = Convert.ToInt32(Console.Read());
+        } while (!(choice <= 10 && choice >= 1));
+        choice--;
+
+        countDown(start, destination, pricearr[choice], choice, paymentSetter);
     }
 
-
-    public void countDown(Location start, Location destination)
+    public void countDown(Location start, Location destination, int amount, int choice, PaymentSetter paymentSetter)
     {
-        int ch;
-
-        ch = Convert.ToInt32(Console.Read());
 
         Console.WriteLine("\nDriver on his way\n");
 
-        ch--;
         //put all variable declaration up
         //subtract fee from credict
         //class for invalid input, 
         //start some count down, with the option to cancel with a fee, or just if countdown
         //finished, write "Done!"
-        int countdown = (int)dists[ch] / (int)speed;
-
+        int countdown = (int)dists[choice] / (int)speed;
 
         while (countdown >= 0)
         {
@@ -136,6 +131,7 @@ abstract public class Car
             Thread.Sleep(1000); // Delay for 1 second
         }
         Console.WriteLine("Done!");
+        paymentSetter.ProcessPayment(amount);
     }
 }
 
@@ -144,7 +140,7 @@ public class Ride : Car
 {
 
     public Ride()
-        
+
     {
         AirConditioner = 0;
         speed = 4.0;
@@ -159,7 +155,7 @@ public class RideAC : Car
 {
 
     public RideAC()
-        
+
     {
         AirConditioner = 5;
         speed = 6.0;
@@ -172,7 +168,7 @@ public class Moto : Car
 {
 
     public Moto()
-        
+
     {
         speed = 5.0;
         Ratio = 1.5;
@@ -183,7 +179,7 @@ public class Moto : Car
 public class Freight : Car
 {
     public Freight()
-        
+
     {
         AirConditioner = 3;
         speed = 3.0;

@@ -1,13 +1,4 @@
-using System;
-using System.Data;
-using System.Data.SqlTypes;
-using Org.BouncyCastle.Cms;
-using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
-using System.Net.Mail;
-
 public interface IIHandler
 {
     IIHandler SetNext(IIHandler handler);
@@ -29,33 +20,33 @@ public class PasswordReset : IIHandler
         if (numCommand == 1)
         {
             string newPassword, confirmPassword;
-             
+
             Console.WriteLine("Enter New Password: ");
-            newPassword = Console.ReadLine();
+            newPassword = Console.ReadLine()!;
             /*do{
                 Console.WriteLine("Password Is Weak. Reenter Your New Password: ");
                 newPassword = Console.ReadLine();
             }while(!Validate.IsValidPassword(newPassword));*/
             Console.WriteLine("Confirm Password: ");
-            confirmPassword = Console.ReadLine();
+            confirmPassword = Console.ReadLine()!;
             while (confirmPassword != newPassword)
             {
                 Console.WriteLine("Password Does Not Match. Reenter: ");
-                confirmPassword = Console.ReadLine();
+                confirmPassword = Console.ReadLine()!;
             }
 
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-                long userID =activeUser.ID;
-                string updatePasswordQuery = "UPDATE newww_users SET Password = @newPassword WHERE ID =" +userID;
+                long userID = activeUser.ID;
+                string updatePasswordQuery = "UPDATE newww_users SET Password = @newPassword WHERE ID =" + userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updatePasswordQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@newPassword", newPassword);
                     int rowsAffected = cmd.ExecuteNonQuery();
-        
+
                 }
             }
 
@@ -88,9 +79,9 @@ public class EmailReset : IIHandler
         if (numCommand == 2)
         {
             string newEmail;
-             
+
             Console.WriteLine("Enter New Email: ");
-            newEmail = Console.ReadLine();
+            newEmail = Console.ReadLine()!;
             /*do{
                 Console.WriteLine("Invalid Email. Reenter Your new Email: ");
                 newEmail = Console.ReadLine();
@@ -99,8 +90,8 @@ public class EmailReset : IIHandler
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-                long userID =activeUser.ID;
-                string updateEmailQuery = "UPDATE newww_users SET Email = @newEmail WHERE ID ="+userID;
+                long userID = activeUser.ID;
+                string updateEmailQuery = "UPDATE newww_users SET Email = @newEmail WHERE ID =" + userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updateEmailQuery, connection))
                 {
@@ -139,9 +130,9 @@ public class PhoneNumberReset : IIHandler
         if (numCommand == 3)
         {
             string newPhoneNumber;
-            
+
             Console.WriteLine("Enter New PhoneNumber: ");
-            newPhoneNumber = Console.ReadLine();
+            newPhoneNumber = Console.ReadLine()!;
             /*do{
                 Console.WriteLine("Invalid PhoneNumber. Reenter Your new PhoneNumber: ");
                 newPhoneNumber = Console.ReadLine();
@@ -150,15 +141,14 @@ public class PhoneNumberReset : IIHandler
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
-                 long userID =activeUser.ID;
-                 
-                string updatePhoneNumberQuery = "UPDATE newww_users SET PhoneNumber = @newPhoneNumber WHERE ID ="+userID;
+                long userID = activeUser.ID;
+
+                string updatePhoneNumberQuery = "UPDATE newww_users SET PhoneNumber = @newPhoneNumber WHERE ID =" + userID;
 
                 using (MySqlCommand cmd = new MySqlCommand(updatePhoneNumberQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@newPhoneNumber", newPhoneNumber);
                     int rowsAffected = cmd.ExecuteNonQuery();
-
                 }
             }
 
@@ -179,21 +169,21 @@ public class PhoneNumberReset : IIHandler
 
 public static class UpdaateUserInformation
 {
-        public static void UserInput(IIHandler passwordReset,User activeUser, string connectionstring)
+    public static void UserInput(IIHandler passwordReset, User activeUser, string connectionstring)
+    {
+        string answer, enteraction;
+        Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
+        answer = Console.ReadLine()!;
+        while (answer == "Y" || answer == "y")
         {
-           string answer,enteraction;
+            Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
+            enteraction = Console.ReadLine()!;
+            int command;
+            command = Convert.ToInt32(enteraction);
+            Console.WriteLine(passwordReset.HandleRequest(command, activeUser, connectionstring));
             Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
             answer = Console.ReadLine()!;
-            while (answer == "Y" || answer == "y")
-            {
-                Console.WriteLine("Choose What You Want To Change:\n1-Change Password\n2-Change Email\n3-Change PhoneNumber");
-                enteraction = Console.ReadLine()!;
-                int command;
-                command = Convert.ToInt32(enteraction);
-                Console.WriteLine(passwordReset.HandleRequest(command, activeUser, connectionstring));
-                Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
-                answer = Console.ReadLine()!;
-            }
         }
-           
+    }
+
 }
