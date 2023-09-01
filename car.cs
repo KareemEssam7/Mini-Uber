@@ -34,8 +34,6 @@ abstract public class Car
             return new Location(latitude, longitude);
         }
     }
-
-
     public void generateOptions(){}
 
     public void displayOptions(){}
@@ -44,7 +42,7 @@ abstract public class Car
     public void RequestRide(Location start, Location destination)
     {
         // choose ride type (require class for types)
-
+        
         // generate random drivers locations
         // run dij to see nearest driver location
         // estimate time and (money based on ride type)
@@ -99,8 +97,6 @@ abstract public class Car
             Console.Write(i + 1);
 
             Console.Write(") ");
-
-
 
             Console.Write((int)(dists[i] / speed));
 
