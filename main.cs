@@ -7,8 +7,8 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle; Allow User Variables=True;";
-
+            string cs = "server=127.0.0.1;uid=root;pwd=1208;database=oracle; Allow User Variables=True;";
+            
             using var con = new MySqlConnection(cs);
             con.Open();
 

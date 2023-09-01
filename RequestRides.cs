@@ -1,19 +1,25 @@
 using System;
 public class RequestRide
 {
-    string? answer;
-    double x2, y2, x1, y1, money = 0, distance = 0;
+    string answer;
+    double x2,y2,x1,y1,distance=0 ,TargetIdx=0,CurrentIdx=0;
+    double[] Locationx ={0 , 30 , 32 , 26  , 20, 16};
+    double[] Locationy ={0 , 32 , 34 , 29 , 19 , 14};
     public void HandleRide(PaymentSetter paymentSetter)
     {
 
-        Console.WriteLine("Enter your Target Location as X-axis , Y-axis :");
-        x2 = Convert.ToInt32(Console.ReadLine());
-        y2 = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Enter your Target Location: 1-Egyptian Museum\n2-Cairo Tower\n3-Khan el-Khalili Market\n4-Salah El-Din Citadel\nCairo Opera House" );
+        TargetIdx=Convert.ToDouble(Console.ReadLine());
+
+        x2=Locationx[(int)TargetIdx];
+        y2=Locationy[(int)TargetIdx];
         Location destination = new Location(x2, y2);
 
-        Console.WriteLine("Enter your Current Location as X-axis , Y-axis :");
-        x1 = Convert.ToInt32(Console.ReadLine());
-        y1 = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Enter your Current Location: 1-Egyptian Museum\n2-Cairo Tower\n3-Khan el-Khalili Market\n4-Salah El-Din Citadel\nCairo Opera House" );
+        CurrentIdx=Convert.ToDouble(Console.ReadLine());
+
+        x1=Locationx[(int)CurrentIdx];
+        y1=Locationy[(int)CurrentIdx];
         Location current = new Location(x1, y1);
 
         Console.WriteLine("Enter the Car type you would like to Order :\n 1-Ride (Without Air conditionar) \n 2-RideAC (With Air conditionar) \n 3-Moto \n 4-Freight");
