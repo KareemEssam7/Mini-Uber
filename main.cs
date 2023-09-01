@@ -14,7 +14,15 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
+<<<<<<< HEAD
             string cs = "server=127.0.0.1;uid=root;pwd=1208;database=oracle";
+=======
+<<<<<<< HEAD
+            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
+=======
+            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle";
+>>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
+>>>>>>> b37678836c1cfefb8a75643e449470fb62b6fe6c
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -42,8 +50,16 @@ namespace MyApp
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
+<<<<<<< HEAD
                                                                                               
+=======
+<<<<<<< HEAD
+            string paymentMethod = CreditMethods.GetUserPaymentMethod();
+=======
+
+>>>>>>> b37678836c1cfefb8a75643e449470fb62b6fe6c
             /*string paymentMethod = CreditMethods.GetUserPaymentMethod();
+>>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
             IPaymentStrategy paymentStrategy;
 
             if (paymentMethod == "creditcard")
