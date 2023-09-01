@@ -26,7 +26,6 @@ namespace MyApp
             ///////////////////////////////////////////////////
 
             //Object Initializations
-            PaymentInfoToStore paymentInfoToStore = new PaymentInfoToStore();
             User activeUser = new User();
             CreditCardPayment activeCredit = new CreditCardPayment("default", "0", 0, 0, "000");
             PaymentSetter paymentSetter = new PaymentSetter();
@@ -37,7 +36,7 @@ namespace MyApp
             loginHandler.SetNext(registerHandler);
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
-            Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs, paymentSetter, activeCredit, paymentInfoToStore));
+            Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs, paymentSetter, activeCredit));
 
 
             //Main Logic

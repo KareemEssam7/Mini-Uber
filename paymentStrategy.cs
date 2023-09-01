@@ -5,7 +5,7 @@ public interface IPaymentStrategy
 
 public class PaymentSetter
 {
-    IPaymentStrategy paymentStrategy;
+    IPaymentStrategy? paymentStrategy;
 
     public void setPaymentStrategy(IPaymentStrategy paymentStrategy)
     {
@@ -66,44 +66,6 @@ public class CreditCardPayment : IPaymentStrategy
         } while (!Validate.ValidateCVV(CreditCVV));
     }
 }
-public static class PaymentMethods
-{
-    public static void GetUserPaymentMethod(PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore)
-    {
-        do
-        {
-            Console.WriteLine("Enter your desired payment method\n 1: CreditCard\n 2: PayPal\n 3: Cash");
-            string interaction = Console.ReadLine()!;
-
-            if (interaction == "creditcard")
-            {
-                activeCredit.registerCreditInfo();
-                paymentSetter.setPaymentStrategy(new CreditCardPayment(activeCredit.CreditName, activeCredit.CreditNumber, activeCredit.Month, activeCredit.Year, activeCredit.CreditCVV));
-                paymentInfoToStore.paymentType = interaction;
-                break;
-            }
-            else if (interaction == "paypal")
-            {
-                Console.WriteLine("Enter paypal Email");
-                paymentInfoToStore.PayPalEmail = Console.ReadLine()!;
-                paymentSetter.setPaymentStrategy(new PayPalPayment(paymentInfoToStore.PayPalEmail));
-                paymentInfoToStore.paymentType = interaction;
-                break;
-            }
-            else if (interaction == "cash")
-            {
-                Console.WriteLine("Thank you");
-                paymentSetter.setPaymentStrategy(new CashPayment());
-                paymentInfoToStore.paymentType = interaction;
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Invalid Payment Type");
-            }
-        } while (true);
-    }
-}
 
 public class PayPalPayment : IPaymentStrategy
 {
@@ -127,8 +89,42 @@ public class CashPayment : IPaymentStrategy
         Console.WriteLine("Thank you for choosing Uber-Mini");
     }
 }
-public class PaymentInfoToStore
+
+public static class PaymentMethods
 {
-    public string paymentType { get; set; }
-    public string PayPalEmail { get; set; }
+    public static void GetUserPaymentMethod(PaymentSetter paymentSetter, CreditCardPayment activeCredit, User activeUser)
+    {
+        do
+        {
+            Console.WriteLine("Enter your desired payment method\n 1: CreditCard\n 2: PayPal\n 3: Cash");
+            string interaction = Console.ReadLine()!;
+
+            if (interaction == "creditcard")
+            {
+                activeCredit.registerCreditInfo();
+                paymentSetter.setPaymentStrategy(new CreditCardPayment(activeCredit.CreditName, activeCredit.CreditNumber, activeCredit.Month, activeCredit.Year, activeCredit.CreditCVV));
+                activeUser.paymentType = interaction;
+                break;
+            }
+            else if (interaction == "paypal")
+            {
+                Console.WriteLine("Enter paypal Email");
+                activeUser.PayPalEmail = Console.ReadLine()!;
+                paymentSetter.setPaymentStrategy(new PayPalPayment(activeUser.PayPalEmail));
+                activeUser.paymentType = interaction;
+                break;
+            }
+            else if (interaction == "cash")
+            {
+                Console.WriteLine("Thank you");
+                paymentSetter.setPaymentStrategy(new CashPayment());
+                activeUser.paymentType = interaction;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid Payment Type");
+            }
+        } while (true);
+    }
 }

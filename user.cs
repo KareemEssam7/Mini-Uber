@@ -2,7 +2,7 @@ using MySql.Data.MySqlClient;
 
 public class UserManager
 {
-    private static UserManager _instance;
+    private static UserManager? _instance;
 
     private UserManager() { }
 
@@ -70,7 +70,7 @@ public class UserManager
 
         return "Validation Succesful";
     }
-    public string Register(User activeUser, string connectionstring, PaymentInfoToStore paymentInfoToStore, CreditCardPayment activeCredit)
+    public string Register(User activeUser, string connectionstring, CreditCardPayment activeCredit)
     {
         using var con = new MySqlConnection(connectionstring);
         con.Open();
@@ -80,16 +80,16 @@ public class UserManager
         cmd.Parameters.AddWithValue("@Email", activeUser.Email);
         cmd.Parameters.AddWithValue("@Password", activeUser.Password);
         cmd.Parameters.AddWithValue("@PhoneNumber", activeUser.PhoneNumber);
-        cmd.Parameters.AddWithValue("@PaymentType", paymentInfoToStore.paymentType);
+        cmd.Parameters.AddWithValue("@PaymentType", activeUser.paymentType);
         cmd.Parameters.AddWithValue("@CreditNumber", activeCredit.CreditNumber);
-        cmd.Parameters.AddWithValue("@PayPalEmail", paymentInfoToStore.PayPalEmail);
+        cmd.Parameters.AddWithValue("@PayPalEmail", activeUser.PayPalEmail);
         cmd.ExecuteNonQuery();
         activeUser.ID = cmd.LastInsertedId;
         con.Close();
 
         return "User registered successfully.";
     }
-    public string Login(string userCommand, User activeUser, string connectionstring, PaymentSetter paymentSetter, CreditCardPayment activeCredit, PaymentInfoToStore paymentInfoToStore)
+    public string Login(User activeUser, string connectionstring, PaymentSetter paymentSetter, CreditCardPayment activeCredit)
     {
         do
         {
@@ -113,18 +113,18 @@ public class UserManager
                     if (reader.Read())
                     {
                         activeUser.ID = reader.GetInt32("ID");
-                        paymentInfoToStore.PayPalEmail = reader.GetString("PayPalEmail");
-                        paymentInfoToStore.paymentType = reader.GetString("PaymentType");
+                        activeUser.PayPalEmail = reader.GetString("PayPalEmail");
+                        activeUser.paymentType = reader.GetString("PaymentType");
                         activeCredit.CreditNumber = reader.GetString("CreditNumber");
-                        if (paymentInfoToStore.paymentType == "creditcard")
+                        if (activeUser.paymentType == "creditcard")
                         {
                             paymentSetter.setPaymentStrategy(new CreditCardPayment(activeCredit.CreditName, activeCredit.CreditNumber, activeCredit.Month, activeCredit.Year, activeCredit.CreditCVV));
                         }
-                        else if (paymentInfoToStore.paymentType == "paypal")
+                        else if (activeUser.paymentType == "paypal")
                         {
-                            paymentSetter.setPaymentStrategy(new PayPalPayment(paymentInfoToStore.PayPalEmail));
+                            paymentSetter.setPaymentStrategy(new PayPalPayment(activeUser.PayPalEmail));
                         }
-                        else if (paymentInfoToStore.paymentType == "cash")
+                        else if (activeUser.paymentType == "cash")
                         {
                             paymentSetter.setPaymentStrategy(new CashPayment());
                         }
@@ -145,10 +145,12 @@ public class UserManager
 
 public class User
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string PhoneNumber { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Email { get; set; }
+    public string? Password { get; set; }
+    public string? PhoneNumber { get; set; }
     public long ID { get; set; }
+    public string? paymentType { get; set; }
+    public string? PayPalEmail { get; set; }
 }

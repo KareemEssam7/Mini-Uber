@@ -7,7 +7,7 @@ public interface IIHandler
 
 public class PasswordReset : IIHandler
 {
-    private IIHandler _nextHandler;
+    private IIHandler? _nextHandler;
 
     public IIHandler SetNext(IIHandler handler)
     {
@@ -22,11 +22,12 @@ public class PasswordReset : IIHandler
             string newPassword, confirmPassword;
 
             Console.WriteLine("Enter New Password: ");
-            newPassword = Console.ReadLine();
-            do{
+            newPassword = Console.ReadLine()!;
+            do
+            {
                 Console.WriteLine("Password Is Weak (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
-                newPassword = Console.ReadLine();
-            }while(!Validate.IsValidPassword(newPassword));
+                newPassword = Console.ReadLine()!;
+            } while (!Validate.IsValidPassword(newPassword));
             Console.WriteLine("Confirm Password: ");
             confirmPassword = Console.ReadLine()!;
             while (confirmPassword != newPassword)
@@ -66,7 +67,7 @@ public class PasswordReset : IIHandler
 
 public class EmailReset : IIHandler
 {
-    private IIHandler _nextHandler;
+    private IIHandler? _nextHandler;
 
     public IIHandler SetNext(IIHandler handler)
     {
@@ -81,11 +82,12 @@ public class EmailReset : IIHandler
             string newEmail;
 
             Console.WriteLine("Enter New Email: ");
-            newEmail = Console.ReadLine();
-            do{
+            newEmail = Console.ReadLine()!;
+            do
+            {
                 Console.WriteLine("Invalid! Please Reenter Your New Email: ");
-                newEmail = Console.ReadLine();
-            }while(!Validate.IsValidEmail(newEmail));
+                newEmail = Console.ReadLine()!;
+            } while (!Validate.IsValidEmail(newEmail));
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
@@ -117,7 +119,7 @@ public class EmailReset : IIHandler
 
 public class PhoneNumberReset : IIHandler
 {
-    private IIHandler _nextHandler;
+    private IIHandler? _nextHandler;
 
     public IIHandler SetNext(IIHandler handler)
     {
@@ -132,11 +134,12 @@ public class PhoneNumberReset : IIHandler
             string newPhoneNumber;
 
             Console.WriteLine("Enter New PhoneNumber: ");
-            newPhoneNumber = Console.ReadLine();
-            do{
+            newPhoneNumber = Console.ReadLine()!;
+            do
+            {
                 Console.WriteLine("Invalid! Please Reenter Your New PhoneNumber: ");
-                newPhoneNumber = Console.ReadLine();
-            }while(!Validate.ValidateEgyptPhoneNumber(newPhoneNumber));
+                newPhoneNumber = Console.ReadLine()!;
+            } while (!Validate.ValidateEgyptPhoneNumber(newPhoneNumber));
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
