@@ -7,8 +7,8 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=1208;database=oracle; Allow User Variables=True;";
-            
+            string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle; Allow User Variables=True;";
+
             using var con = new MySqlConnection(cs);
             con.Open();
 
@@ -38,7 +38,7 @@ namespace MyApp
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs, paymentSetter, activeCredit, paymentInfoToStore));
-            Console.WriteLine(paymentInfoToStore.paymentType);
+
 
             //Main Logic
             int userChoice;

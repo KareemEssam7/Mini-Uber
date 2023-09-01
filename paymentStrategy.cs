@@ -36,7 +36,7 @@ public class CreditCardPayment : IPaymentStrategy
     }
     public void ProcessPayment(int amount)
     {
-        Console.WriteLine($"Processing credit card payment of ${amount}.");
+        Console.WriteLine($"Processing credit card payment of ${amount} using email {CreditNumber}.");
     }
     public void registerCreditInfo()
     {
@@ -77,8 +77,8 @@ public static class PaymentMethods
 
             if (interaction == "creditcard")
             {
-                paymentSetter.setPaymentStrategy(new CreditCardPayment("default", "1010010101", 0, 0, "000"));
                 activeCredit.registerCreditInfo();
+                paymentSetter.setPaymentStrategy(new CreditCardPayment(activeCredit.CreditName, activeCredit.CreditNumber, activeCredit.Month, activeCredit.Year, activeCredit.CreditCVV));
                 paymentInfoToStore.paymentType = interaction;
                 break;
             }
