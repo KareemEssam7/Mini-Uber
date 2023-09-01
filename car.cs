@@ -7,8 +7,14 @@ using System.Reflection.Metadata.Ecma335;
 abstract public class Car
 {
     public double speed, Ratio;
-
+    double[] dists = new double[100];
     public int AirConditioner;
+    static double dist(double x1, double y1, double x2, double y2)
+    {
+        double deltaX = x2 - x1;
+        double deltaY = y2 - y1;
+        return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
 
     public class DriverLocationGenerator
     {
@@ -34,60 +40,34 @@ abstract public class Car
             return new Location(latitude, longitude);
         }
     }
-    public void generateOptions(){}
 
-    public void displayOptions(){}
 
-    public void countDown(){}
-    public void RequestRide(Location start, Location destination)
+    public void generateOptions(Location start, Location destination)
     {
-        // choose ride type (require class for types)
-        
-        // generate random drivers locations
-        // run dij to see nearest driver location
-        // estimate time and (money based on ride type)
-        // have an option to cancel while waiting
-        // 
-
-        Console.WriteLine(speed);
-
-        static double dist(double x1, double y1, double x2, double y2)
-        {
-
-            double deltaX = x2 - x1;
-            double deltaY = y2 - y1;
-            return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-        }
 
         Location[] arr = new Location[10000];
         DriverLocationGenerator dlg = new DriverLocationGenerator();
 
-        // Dijkstra d = new Dijkstra();
 
         double x = start.x, y = start.y;
-        // d.Init(10000);
 
-        double[] dists = new double[100];
+
         for (int i = 0; i < 100; i++)
         {
 
             arr[i] = dlg.GenerateRandomLocation();
-            //Console.WriteLine(arr[i].x); Console.WriteLine('\n');
 
             dists[i] = dist(x, y, arr[i].x, arr[i].y);
 
-            // d.Edge(1, i + 1, 8);
         }
 
-        //d.Run(1);
-
-        //   d.dists.Sort();
-
         Array.Sort(dists);
+        displayOptions(start, destination);
+    }
 
+    public void displayOptions(Location start, Location destination)
+    {
         Console.WriteLine("here's the available drivers\n");
-
-        //this should be abstract, should have the real values base on ride types
 
         double D = dist(start.x, start.y, destination.x, destination.y);
 
@@ -97,6 +77,8 @@ abstract public class Car
             Console.Write(i + 1);
 
             Console.Write(") ");
+
+
 
             Console.Write((int)(dists[i] / speed));
 
@@ -110,7 +92,12 @@ abstract public class Car
 
             Console.Write(" pounds\n");
         }
+        countDown(start, destination);
+    }
 
+
+    public void countDown(Location start, Location destination)
+    {
         int ch;
 
         ch = Convert.ToInt32(Console.Read());
@@ -148,22 +135,16 @@ abstract public class Car
 
             Thread.Sleep(1000); // Delay for 1 second
         }
-
-
-
         Console.WriteLine("Done!");
     }
 }
 
+
 public class Ride : Car
 {
 
-    //    static double speed, Ratio;
-
-    //   static int AirConditioner;
-
     public Ride()
-        : base()
+        
     {
         AirConditioner = 0;
         speed = 4.0;
@@ -177,11 +158,8 @@ public class Ride : Car
 public class RideAC : Car
 {
 
-
-    // static double speed, Ratio;
-    //static int AirConditioner;
     public RideAC()
-        : base()
+        
     {
         AirConditioner = 5;
         speed = 6.0;
@@ -193,10 +171,8 @@ public class RideAC : Car
 public class Moto : Car
 {
 
-    //static double speed, Ratio;
-
     public Moto()
-        : base()
+        
     {
         speed = 5.0;
         Ratio = 1.5;
@@ -206,9 +182,8 @@ public class Moto : Car
 }
 public class Freight : Car
 {
-
     public Freight()
-        : base()
+        
     {
         AirConditioner = 3;
         speed = 3.0;
@@ -217,3 +192,4 @@ public class Freight : Car
 
 
 }
+

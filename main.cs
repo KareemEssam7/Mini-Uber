@@ -14,7 +14,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle; Allow User Variables=True;";
+            string cs = "server=127.0.0.1;uid=root;pwd=12345678;database=oracle; ";
 
             using var con = new MySqlConnection(cs);
             con.Open();

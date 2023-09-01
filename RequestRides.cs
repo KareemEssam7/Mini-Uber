@@ -41,27 +41,36 @@ public class RequestRide
 
         if(answer=="Ride")
         {
-            Car cartype= new Ride();
+            Ride cartype = new Ride();
             
-            money=cartype.Ratio * DistanceCalc(x1,x2,y1,y2);
+            Location fst = new Location(x1, y1);
+            Location snd = new Location(x2, y2);
+
+            cartype.generateOptions(fst, snd);
         }
         else if(answer=="RideAC")
         {
             Car cartype=new RideAC();
-            money=cartype.Ratio * DistanceCalc(x1,x2,y1,y2);
+            Location start = new Location(x1, y1);
+            Location destination = new Location(x2, y2);
+
+            cartype.generateOptions(start, destination);
         }
         else if(answer=="Freight")
         {
             Car cartype= new Freight();
-            money=cartype.Ratio * DistanceCalc(x1,x2,y1,y2);
+            Location start = new Location(x1, y1);
+            Location destination = new Location(x2, y2);
+
+            cartype.generateOptions(start, destination);
         }
         else
         {
             Car cartype= new Moto();
-            money=cartype.Ratio * DistanceCalc(x1,x2,y1,y2);
+            Location start = new Location(x1, y1);
+            Location destination = new Location(x2, y2);
+
+            cartype.generateOptions(start, destination);
         }
-        
-        Console.WriteLine("Your Uber Will cost: " + money);
-        Console.WriteLine("Your Uber is on the Way ! ");
     }    
 }
