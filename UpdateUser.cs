@@ -40,7 +40,7 @@ public class PasswordReset : IIHandler
             {
                 Console.WriteLine("Password Does Not Match. Reenter: ");
                 confirmPassword = Console.ReadLine();
-            } 
+            }
 
 
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
@@ -61,13 +61,13 @@ public class PasswordReset : IIHandler
 
         }
         else if (_nextHandler != null)
-            {
-                return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
-            }
-            else
-            {
-                return "Invalid Command";
-            }
+        {
+            return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
+        }
+        else
+        {
+            return "Invalid Command";
+        }
     }
 }
 
@@ -92,7 +92,7 @@ public class EmailReset : IIHandler
                 Console.WriteLine("Invalid Email. Reenter Your new Email: ");
                 newEmail = Console.ReadLine();
             }while(!Validate.IsValidEmail(newEmail));*/
-           
+
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
@@ -111,13 +111,13 @@ public class EmailReset : IIHandler
 
         }
         else if (_nextHandler != null)
-            {
-                return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
-            }
-            else
-            {
-                return "Invalid Command";
-            }
+        {
+            return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
+        }
+        else
+        {
+            return "Invalid Command";
+        }
     }
 }
 
@@ -142,7 +142,7 @@ public class PhoneNumberReset : IIHandler
                 Console.WriteLine("Invalid PhoneNumber. Reenter Your new PhoneNumber: ");
                 newPhoneNumber = Console.ReadLine();
             }while(!Validate.IsValidPhoneNumber(newPhoneNumber));*/
-           
+
             using (MySqlConnection connection = new MySqlConnection(connectionstring))
             {
                 connection.Open();
@@ -161,13 +161,13 @@ public class PhoneNumberReset : IIHandler
 
         }
         else if (_nextHandler != null)
-            {
-                return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
-            }
-            else
-            {
-                return "Invalid Command";
-            }
+        {
+            return _nextHandler.HandleRequest(numCommand, activeUser, connectionstring);
+        }
+        else
+        {
+            return "Invalid Command";
+        }
     }
 }
 

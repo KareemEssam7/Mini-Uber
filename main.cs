@@ -13,11 +13,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ///////////////////////////////////////////////////////
-<<<<<<< HEAD
             string cs = "server=127.0.0.1;uid=root;pwd=parlerler1543#;database=oracle";
-=======
-            string cs = "server=127.0.0.1;uid=root;pwd=mobakry24;database=oracle";
->>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
 
             using var con = new MySqlConnection(cs);
             con.Open();
@@ -37,40 +33,17 @@ namespace MyApp
 
             User activeUser = new User();
 
-
+            //Login and register logic
             IHandler loginHandler = new LoginHandler();
             IHandler registerHandler = new RegisterHandler();
-
             loginHandler.SetNext(registerHandler);
             Console.WriteLine("Register or Login?");
             string enteraction = Console.ReadLine()!;
             Console.WriteLine(loginHandler.HandleRequest(enteraction, activeUser, cs));
-<<<<<<< HEAD
-            string paymentMethod = CreditMethods.GetUserPaymentMethod();
-=======
 
-            /*string paymentMethod = CreditMethods.GetUserPaymentMethod();
->>>>>>> 996ff50aecad56617f3a43110f93ef8e425ff1b8
-            IPaymentStrategy paymentStrategy;
-
-            if (paymentMethod == "creditcard")
-            {
-                paymentStrategy = new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0);
-                CreditCardPayment activeCredit = new CreditCardPayment("parlerler", "1010010101", 0, 0, "033", 0.0);
-                activeCredit.registerCreditInfo();
-            }
-            else if (paymentMethod == "paypal")
-            {
-                Console.WriteLine("Enter paypal Email");
-                string email = Console.ReadLine()!;
-                paymentStrategy = new PayPalPayment(email);
-            }
-            else if (paymentMethod == "cash")
-            {
-                Console.WriteLine("Thank you");
-            }
-            //should only take this information when regestering user.
-            //should register this info into the database with the rest of the user info.*/
+            //geting payment type
+            PaymentSetter paymentSetter = new PaymentSetter();
+            PaymentMethods.GetUserPaymentMethod(paymentSetter);
 
 
             IIHandler passwordReset = new PasswordReset();
@@ -91,11 +64,6 @@ namespace MyApp
                 Console.WriteLine("Do You Want To Change Your Account Information? Y/N");
                 answer = Console.ReadLine()!;
             }
-
-
-
-
-
         }
     }
 }

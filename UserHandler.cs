@@ -40,17 +40,24 @@ public class LoginHandler : IHandler
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT COUNT(*) FROM newww_users WHERE Email = @Email AND Password = @Password";
+                    string selectQuery = "SELECT id FROM newww_user WHERE email = @Email AND password = @Password";
                     using MySqlCommand command = new MySqlCommand(selectQuery, connection);
 
                     command.Parameters.AddWithValue("@Email", activeUser.Email);
                     command.Parameters.AddWithValue("@Password", activeUser.Password);
 
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-
-                    if (count > 0)
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        break;
+                        if (reader.Read())
+                        {
+                            int userId = reader.GetInt32("id");
+
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("User not found.");
+                        }
                     }
 
                     connection.Close();
@@ -86,7 +93,6 @@ public class RegisterHandler : IHandler
         if (userCommand == "Register" || userCommand == "register")
         {
             Console.WriteLine(RegisterMethod.getUserData(activeUser));
-
             using var con = new MySqlConnection(connectionstring);
             con.Open();
             MySqlCommand cmd = new MySqlCommand(@"Insert into newww_users(FirstName, LastName, Email, Password, PhoneNumber) values (@FirstName, @LastName, @Email, @Password, @PhoneNumber)", con);
@@ -97,6 +103,7 @@ public class RegisterHandler : IHandler
             cmd.Parameters.AddWithValue("@PhoneNumber", activeUser.PhoneNumber);
             cmd.ExecuteNonQuery();
             con.Close();
+
             return "User registered successfully.";
         }
         else if (_nextHandler != null)
@@ -114,43 +121,56 @@ static class RegisterMethod
 {
     public static string getUserData(User activeUser)
     {
-        do
+        Console.WriteLine("Enter First Name: ");
+        activeUser.FirstName = Console.ReadLine()!;
+        while (!Validate.ValidateName(activeUser.FirstName))
         {
-            Console.WriteLine("enter first name: ");
+            Console.WriteLine("Invalid! Please Reenter Your First Name: ");
             activeUser.FirstName = Console.ReadLine()!;
+        }
 
-        } while (!Validate.ValidateName(activeUser.FirstName));
-
-        do
+        Console.WriteLine("Enter Last Name: ");
+        activeUser.LastName = Console.ReadLine()!;
+        while (!Validate.ValidateName(activeUser.LastName))
         {
-            Console.WriteLine("enter last name: ");
+            Console.WriteLine("Invalid! Please Reenter Your Last Name: ");
             activeUser.LastName = Console.ReadLine()!;
-        } while (!Validate.ValidateName(activeUser.LastName));
+        }
 
-        do
+        Console.WriteLine("Enter Email: ");
+        activeUser.Email = Console.ReadLine()!;
+        while (!Validate.IsValidEmail(activeUser.Email))
         {
-            Console.WriteLine("enter Email: ");
+            Console.WriteLine("Invalid! Please Reenter Your Email: ");
             activeUser.Email = Console.ReadLine()!;
-        } while (!Validate.IsValidEmail(activeUser.Email));
+        }
 
-        do
+        Console.WriteLine("Enter Password(Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
+        activeUser.Password = Console.ReadLine()!;
+        while (!Validate.IsValidPassword(activeUser.Password))
         {
-            Console.WriteLine("enter password(must include: lowercase, uppercase, number, special char, more than 8 chars): ");
+            Console.WriteLine("Invalid Password (Must Include: Lowercase, Uppercase, Number, Special Char, More Than 8 Chars): ");
             activeUser.Password = Console.ReadLine()!;
-        } while (!Validate.IsValidPassword(activeUser.Password));
+        }
 
-        string tmppass;
-        do
+        string passConfirm;
+        Console.WriteLine("Confirm Password: ");
+        passConfirm = Console.ReadLine()!;
+        while (passConfirm != activeUser.Password)
         {
-            Console.WriteLine("Confirm password: ");
-            tmppass = Console.ReadLine()!;
-        } while (tmppass != activeUser.Password);
+            Console.WriteLine("Password Does Not Match! Reenter Your Password: ");
+            passConfirm = Console.ReadLine()!;
+        }
 
-        do
+        Console.WriteLine("Enter PhoneNumber: ");
+        activeUser.PhoneNumber = Console.ReadLine()!;
+        while (!Validate.ValidateEgyptPhoneNumber(activeUser.PhoneNumber))
         {
-            Console.WriteLine("enter phone number: ");
+            Console.WriteLine("Invalid! Please Reenter Your PhoneNumber: ");
             activeUser.PhoneNumber = Console.ReadLine()!;
-        } while (!Validate.ValidateEgyptPhoneNumber(activeUser.PhoneNumber));
+        }
+
         return "Validation Succesful";
     }
+
 }
